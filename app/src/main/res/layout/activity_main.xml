@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="3"
+    android:padding="5dp">
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/grid_btn_1x1"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onGridButtonClicked"
+        android:scaleType="fitCenter"
+        android:tag="00">
+
+    </br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/grid_btn_1x2"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onGridButtonClicked"
+        android:scaleType="fitCenter"
+        android:tag="01">
+
+    </br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/grid_btn_1x3"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onGridButtonClicked"
+        android:scaleType="fitCenter"
+        android:tag="02">
+
+    </br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/grid_btn_2x1"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onGridButtonClicked"
+        android:scaleType="fitCenter"
+        android:tag="10">
+
+    </br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/grid_btn_2x2"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onGridButtonClicked"
+        android:scaleType="fitCenter"
+        android:tag="11">
+
+    </br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/grid_btn_2x3"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onGridButtonClicked"
+        android:scaleType="fitCenter"
+        android:tag="12">
+
+    </br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/grid_btn_3x1"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onGridButtonClicked"
+        android:scaleType="fitCenter"
+        android:tag="20">
+
+    </br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/grid_btn_3x2"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onGridButtonClicked"
+        android:scaleType="fitCenter"
+        android:tag="21">
+
+    </br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/grid_btn_3x3"
+        android:layout_width="0dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onGridButtonClicked"
+        android:scaleType="fitCenter"
+        android:tag="22">
+
+    </br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_columnSpan="3"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:background="?android:attr/listDivider" />
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/btn_player_1"
+        android:layout_width="0dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onPlayer1ImageClicked"
+        android:scaleType="fitCenter"
+        android:src="@drawable/player_1_image"
+        android:tag="22"></br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/btn_player_2"
+        android:layout_width="0dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:onClick="onPlayer2ImageClicked"
+        android:scaleType="fitCenter"
+        android:src="@drawable/player_2_image"
+        android:tag="22"></br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
+        android:id="@+id/btn_clear"
+        android:layout_width="0dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="3sp"
+        android:backgroundTint="@color/defaultBackgroundColor"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:scaleType="fitCenter"
+        android:src="@drawable/clear_image"
+        android:tag="22"></br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+
+    <TextView
+        android:id="@+id/tip_text"
+        android:layout_width="match_parent"
+        android:layout_columnSpan="3"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="Dica">
+
+    </TextView>
+
+</GridLayout>
