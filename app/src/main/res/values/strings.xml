@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Jogo_velha_selfies</string>
+    <string name="select_first_player">Selecione quem jogará primeiro!</string>
+    <string name="take_selfies">Tire as selfies dos dois jogadores para iniciar o jogo!</string>
+    <string name="first_player_photo_required">Selfie do jogador 1 é necessária para jogar</string>
+    <string name="second_player_photo_required">Selfie do jogador 1 é necessária para jogar</string>
+    <string name="game_title">Jogo da Velha de Selfies</string>
 </resources>

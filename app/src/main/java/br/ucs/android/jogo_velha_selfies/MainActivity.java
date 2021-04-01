@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,17 +44,24 @@ public class MainActivity extends AppCompatActivity {
     ColorStateList stateListSelected;
     ColorStateList stateListDefault;
 
+    ResizableImageButton btnPlayer1;
+    ResizableImageButton btnPlayer2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setTitle("Jogo da Velha de Selfies");
+        getSupportActionBar().setTitle(R.string.game_title);
 
         tipTextView = (TextView) findViewById(R.id.tip_text);
-        tipTextView.setText("Tire as selfies dos dois jogadores para iniciar o jogo!");
+        tipTextView.setText(R.string.take_selfies);
 
         stateListSelected = ColorStateList.valueOf(ContextCompat.getColor(getBaseContext(), R.color.selectedPlayerColor));
         stateListDefault = ColorStateList.valueOf(ContextCompat.getColor(getBaseContext(), R.color.defaultBackgroundColor));
+
+        btnPlayer1 = findViewById(R.id.btn_player_1);
+        btnPlayer2 = findViewById(R.id.btn_player_2);
+
     }
 
     @Override
@@ -63,10 +71,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE_PLAYER1 && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-            ResizableImageButton btn = (ResizableImageButton) findViewById(R.id.btn_player_1);
-            //btn.setBackground(new BitmapDrawable(getResources(), photo));
-            //btn.setText("");
-            btn.setImageBitmap(photo);
+            btnPlayer1.setImageBitmap(photo);
             player1Image = photo;
             verifyIfGameCanStart();
         }
@@ -74,10 +79,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE_PLAYER2 && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-            ResizableImageButton btn = (ResizableImageButton) findViewById(R.id.btn_player_2);
-            //btn.setBackground(new BitmapDrawable(getResources(), photo));
-            //btn.setText("");
-            btn.setImageBitmap(photo);
+            btnPlayer2.setImageBitmap(photo);
             player2Image = photo;
             verifyIfGameCanStart();
         }
@@ -92,12 +94,12 @@ public class MainActivity extends AppCompatActivity {
         int colNumber = Integer.parseInt(tag.substring(1, 2));
 
         if (player1Image == null) {
-            showToast("Selfie do jogador 1 é necessária para jogar");
+            showToast(getString(R.string.first_player_photo_required));
             return;
         }
 
         if (player2Image == null) {
-            showToast("Selfie do jogador 1 é necessária para jogar");
+            showToast(getString(R.string.second_player_photo_required));
             return;
         }
 
@@ -136,6 +138,43 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void restartGame(View view) {
+
+        player1Image = null;
+        player2Image = null;
+        isPlaying = false;
+        currentPlayerTurn = -1;
+
+        tipTextView.setText(R.string.take_selfies);
+
+        btnPlayer1.setBackgroundTintList(stateListDefault);
+        btnPlayer1.setImageResource(R.drawable.player_1_image);
+        btnPlayer2.setBackgroundTintList(stateListDefault);
+        btnPlayer2.setImageResource(R.drawable.player_2_image);
+
+        resetGridButtonByTag("00");
+        resetGridButtonByTag("01");
+        resetGridButtonByTag("01");
+        resetGridButtonByTag("10");
+        resetGridButtonByTag("11");
+        resetGridButtonByTag("11");
+        resetGridButtonByTag("20");
+        resetGridButtonByTag("21");
+        resetGridButtonByTag("21");
+
+    }
+
+    private void resetGridButtonByTag(String tag) {
+        ResizableImageButton btn = (ResizableImageButton) getViewByTag(tag);
+        btn.setBackgroundTintList(stateListDefault);
+        btn.setImageBitmap(null);
+    }
+
+    private View getViewByTag(String tag) {
+        GridLayout gl = (GridLayout)findViewById(R.id.grid_layout);
+        return (View) gl.findViewWithTag(tag);
+    }
+
     private void changeTurn(int turn) {
 
         if (turn > 0) {
@@ -143,9 +182,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             currentPlayerTurn = currentPlayerTurn == 1 ? 2 : 1;
         }
-
-        ResizableImageButton btnPlayer1 = findViewById(R.id.btn_player_1);
-        ResizableImageButton btnPlayer2 = findViewById(R.id.btn_player_2);
 
         if (currentPlayerTurn == 1) {
             btnPlayer1.setBackgroundTintList(stateListSelected);
@@ -176,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         isPlaying = true;
-        tipTextView.setText("Selecione quem jogará primeiro!");
+        tipTextView.setText(R.string.select_first_player);
 
     }
 

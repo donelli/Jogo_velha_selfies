@@ -2,6 +2,7 @@
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:grid="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/grid_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:columnCount="3"
@@ -138,6 +139,7 @@
     <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
         android:id="@+id/grid_btn_3x3"
         android:layout_width="0dp"
+        android:layout_height="100dp"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
         android:layout_margin="3sp"
@@ -171,7 +173,7 @@
         android:onClick="onPlayer1ImageClicked"
         android:scaleType="fitCenter"
         android:src="@drawable/player_1_image"
-        android:tag="22"></br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+        android:tag="22" />
 
     <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
         android:id="@+id/btn_player_2"
@@ -185,7 +187,7 @@
         android:onClick="onPlayer2ImageClicked"
         android:scaleType="fitCenter"
         android:src="@drawable/player_2_image"
-        android:tag="22"></br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+        android:tag="22" />
 
     <br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton
         android:id="@+id/btn_clear"
@@ -196,9 +198,10 @@
         android:backgroundTint="@color/defaultBackgroundColor"
         android:gravity="center"
         android:includeFontPadding="false"
+        android:onClick="restartGame"
         android:scaleType="fitCenter"
         android:src="@drawable/clear_image"
-        android:tag="22"></br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton>
+        android:tag="22" />
 
     <TextView
         android:id="@+id/tip_text"
