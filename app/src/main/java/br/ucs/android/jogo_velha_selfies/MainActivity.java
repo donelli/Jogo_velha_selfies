@@ -1,11 +1,13 @@
 package br.ucs.android.jogo_velha_selfies;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -18,13 +20,24 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.time.Duration;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import br.ucs.android.jogo_velha_selfies.classes.ResizableButton;
 import br.ucs.android.jogo_velha_selfies.classes.ResizableImageButton;
@@ -36,16 +49,23 @@ public class MainActivity extends AppCompatActivity {
     Bitmap player2Image;
     TextView tipTextView;
     boolean isPlaying = false;
+    boolean hasWinner = false;
     int currentPlayerTurn = -1;
+    int winnerPlayer = -1;
+
+    int [][] position = new int[3][3];
 
     static final int REQUEST_IMAGE_CAPTURE_PLAYER1 = 1;
     static final int REQUEST_IMAGE_CAPTURE_PLAYER2 = 2;
 
     ColorStateList stateListSelected;
     ColorStateList stateListDefault;
+    ColorStateList stateListWinner;
 
     ResizableImageButton btnPlayer1;
     ResizableImageButton btnPlayer2;
+
+    private AlertDialog alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +74,16 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.game_title);
 
         tipTextView = (TextView) findViewById(R.id.tip_text);
-        tipTextView.setText(R.string.take_selfies);
 
         stateListSelected = ColorStateList.valueOf(ContextCompat.getColor(getBaseContext(), R.color.selectedPlayerColor));
         stateListDefault = ColorStateList.valueOf(ContextCompat.getColor(getBaseContext(), R.color.defaultBackgroundColor));
+        stateListWinner = ColorStateList.valueOf(ContextCompat.getColor(getBaseContext(), R.color.winnerBackgroundColor));
 
         btnPlayer1 = findViewById(R.id.btn_player_1);
         btnPlayer2 = findViewById(R.id.btn_player_2);
+
+        tipTextView.setText(R.string.take_selfies);
+        clearPositions();
 
     }
 
@@ -104,10 +127,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (currentPlayerTurn == -1) {
+            showToast("Selecione qual jogar deve começar!");
             return;
         }
 
+        if (hasWinner) {
+            return;
+        }
+
+        if (this.position[rowNumber][colNumber] != -1) {
+            showToast("Esta posição já está preenchida!");
+            return;
+        }
+
+        this.position[rowNumber][colNumber] = currentPlayerTurn;
         ((ResizableImageButton) view).setImageBitmap(currentPlayerTurn == 1 ? player1Image : player2Image);
+
+        if (gameHasWinner()) {
+            return;
+        }
+
         changeTurn(-1);
 
     }
@@ -140,28 +179,163 @@ public class MainActivity extends AppCompatActivity {
 
     public void restartGame(View view) {
 
-        player1Image = null;
-        player2Image = null;
+        clearPositions();
         isPlaying = false;
         currentPlayerTurn = -1;
+        hasWinner = false;
 
-        tipTextView.setText(R.string.take_selfies);
-
-        btnPlayer1.setBackgroundTintList(stateListDefault);
-        btnPlayer1.setImageResource(R.drawable.player_1_image);
         btnPlayer2.setBackgroundTintList(stateListDefault);
+        btnPlayer1.setBackgroundTintList(stateListDefault);
+
+        if (view == null) {
+            isPlaying = true;
+            tipTextView.setText(R.string.select_first_player);
+            return;
+        }
+
+        player1Image = null;
+        player2Image = null;
+
+        btnPlayer1.setImageResource(R.drawable.player_1_image);
         btnPlayer2.setImageResource(R.drawable.player_2_image);
 
-        resetGridButtonByTag("00");
-        resetGridButtonByTag("01");
-        resetGridButtonByTag("01");
-        resetGridButtonByTag("10");
-        resetGridButtonByTag("11");
-        resetGridButtonByTag("11");
-        resetGridButtonByTag("20");
-        resetGridButtonByTag("21");
-        resetGridButtonByTag("21");
+    }
 
+    private void clearPositions() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                this.position[i][j] = -1;
+                resetGridButtonByTag(i + "" + j);
+            }
+        }
+    }
+
+    private boolean gameHasWinner() {
+
+        boolean hasWinner = false;
+
+        // full row
+        for (int i = 0; i < 3; i++) {
+
+            if (this.position[i][0] == this.position[i][1] && this.position[i][1] == this.position[i][2]) {
+
+                if (this.position[i][0] == -1) continue;
+
+                getViewByTag(i + "0").setBackgroundTintList(stateListWinner);
+                getViewByTag(i + "1").setBackgroundTintList(stateListWinner);
+                getViewByTag(i + "2").setBackgroundTintList(stateListWinner);
+                hasWinner = true;
+                winnerPlayer = this.position[i][0];
+                break;
+            }
+
+        }
+
+        // full column
+        if (!hasWinner) {
+            for (int i = 0; i < 3; i++) {
+
+                if (this.position[0][i] == this.position[1][i] && this.position[1][i] == this.position[2][i]) {
+
+                    if (this.position[0][i] == -1) continue;
+
+                    getViewByTag("0" + i).setBackgroundTintList(stateListWinner);
+                    getViewByTag("1" + i).setBackgroundTintList(stateListWinner);
+                    getViewByTag("2" + i).setBackgroundTintList(stateListWinner);
+                    hasWinner = true;
+                    winnerPlayer = this.position[0][i];
+                    break;
+                }
+
+            }
+        }
+
+        // diagonal
+        if (!hasWinner) {
+
+            if (this.position[0][0] == this.position[1][1] && this.position[1][1] == this.position[2][2]) {
+
+                if (this.position[0][0] != -1) {
+                    getViewByTag("00").setBackgroundTintList(stateListWinner);
+                    getViewByTag("11").setBackgroundTintList(stateListWinner);
+                    getViewByTag("22").setBackgroundTintList(stateListWinner);
+                    hasWinner = true;
+                    winnerPlayer = this.position[0][0];
+                }
+
+            }
+        }
+
+        if (!hasWinner) {
+            if (this.position[0][2] == this.position[1][1] && this.position[1][1] == this.position[2][0]) {
+
+                if (this.position[0][2] != -1) {
+                    getViewByTag("02").setBackgroundTintList(stateListWinner);
+                    getViewByTag("11").setBackgroundTintList(stateListWinner);
+                    getViewByTag("20").setBackgroundTintList(stateListWinner);
+                    hasWinner = true;
+                    winnerPlayer = this.position[0][2];
+                }
+
+            }
+        }
+
+        if (hasWinner) {
+            this.hasWinner = true;
+            setTimeout(() -> {
+
+                this.runOnUiThread(() -> {
+
+                    LayoutInflater li = getLayoutInflater();
+                    View view = li.inflate(R.layout.winner_alert, null);
+
+                    ImageView img = (ImageView) view.findViewById(R.id.imageView);
+                    img.setImageBitmap(winnerPlayer == 1 ? player1Image : player2Image);
+
+                    Button dismissBtn = (Button) view.findViewById(R.id.btn_dismiss);
+                    dismissBtn.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v)
+                        {
+                            alert.cancel();
+                            restartGame(null);
+                        }
+                    });
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Vencedor");
+                    builder.setView(view);
+                    alert = builder.create();
+                    alert.show();
+
+                });
+
+            }, 3000);
+            return true;
+        }
+
+        boolean hasBlankSpaces = false;
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+
+                int val = this.position[i][j];
+
+                if (val == -1) {
+                    hasBlankSpaces = true;
+                    break;
+                }
+
+            }
+            if (hasBlankSpaces) {
+                break;
+            }
+        }
+
+        if (!hasBlankSpaces) {
+            System.out.println("deu VELHA!");
+        }
+
+        return false;
     }
 
     private void resetGridButtonByTag(String tag) {
@@ -214,6 +388,18 @@ public class MainActivity extends AppCompatActivity {
         isPlaying = true;
         tipTextView.setText(R.string.select_first_player);
 
+    }
+
+    private void setTimeout(Runnable runnable, int delay){
+        new Thread(() -> {
+            try {
+                Thread.sleep(delay);
+                runnable.run();
+            }
+            catch (Exception e){
+                System.err.println(e);
+            }
+        }).start();
     }
 
 }
